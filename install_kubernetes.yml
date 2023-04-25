@@ -25,7 +25,6 @@
           groups:
           - system:bootstrappers:kubeadm:default-node-token
     kubernetes_allow_pods_on_master: true
-    kubernetes_version_rhel_package='1.26.1'
   pre_tasks:
   - name: update all packages
     yum:

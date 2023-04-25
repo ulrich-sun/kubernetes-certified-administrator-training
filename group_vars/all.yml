@@ -1,2 +1,3 @@
 ---
 kubernetes_apiserver_advertise_address: "{{ ansible_host }}"
+kubernetes_version_rhel_package: '1.26.1'
