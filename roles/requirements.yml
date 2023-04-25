@@ -1,0 +1,8 @@
+# Install a role for pip
+- src: geerlingguy.pip
+
+# Install containerd-cri
+- src: geerlingguy.containerd
+
+# Install kubenretes
+- src: geerlingguy.kubernetes

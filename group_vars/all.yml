@@ -1,0 +1,2 @@
+---
+kubernetes_apiserver_advertise_address: "{{ ansible_host }}"
