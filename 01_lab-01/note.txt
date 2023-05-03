@@ -1,0 +1,13 @@
+On master :
+-----------
+
+1- Kubernetes node list : kubectl get nodes
+2- Kubernetes components : kubectl get pod -n kube-system
+3- Containerd components : ctr -n k8s.io containers list
+4- Component config : ls /etc/kubernetes/
+
+On worker:
+----------
+1- Containerd components : registry.k8s.io/kube-proxy
+2- Component config : ls /etc/kubernetes/
+
