@@ -1,0 +1,21 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  labels:
+    app: pozos-website
+  name: pozos-website
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: pozos-website
+  template:
+    metadata:
+      labels:
+        app: pozos-website
+    spec:
+      containers:
+      - image: php:apache
+        name: php
+        ports:
+        - containerPort: 80

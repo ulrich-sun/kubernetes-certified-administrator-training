@@ -1,0 +1,20 @@
+# kubectl cheatsheet : https://kubernetes.io/docs/reference/kubectl/cheatsheet/
+
+kubectl apply -f frontend-pod.yml
+kubectl get pod
+kubectl describe pod pozos-website
+kubectl delete -f frontend-pod.yml
+kubectl apply -f frontend-deploy.yml
+kubectl get deploy
+kubectl describe deploy pozos-website
+kubectl scale --replicas=3 -f frontend-deploy.yml
+kubectl set image deployment/pozos-website php=php:apache-bullseye
+kubectl get rs
+kubectl get deploy
+kubectl rollout history deployment/pozos-website
+kubectl rollout history deployment/pozos-website --to-revision=1 
+kubectl rollout status -w deployment/pozos-website
+kubectl get rs
+kubectl get deploy
+kubectl delete -f frontend-deploy.yml
+

@@ -1,0 +1,10 @@
+apiVersion: v1
+kind: Pod
+metadata:
+  name: pozos-website 
+spec:
+  containers:
+  - name: pozos-website 
+    image: php:apache 
+    ports:
+    - containerPort: 80
