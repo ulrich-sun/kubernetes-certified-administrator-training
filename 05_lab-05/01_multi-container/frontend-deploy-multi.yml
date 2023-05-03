@@ -19,3 +19,7 @@ spec:
         name: php
         ports:
         - containerPort: 80
+      - image: eazytrainingfr/pozos-api:0.1
+        name: pozos-api
+        ports:
+        - containerPort: 5000

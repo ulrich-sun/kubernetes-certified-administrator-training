@@ -1,0 +1,59 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  labels:
+    app: pozos-website
+  name: pozos-website
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: pozos-website
+  template:
+    metadata:
+      labels:
+        app: pozos-website
+    spec:
+      initContainers:
+      - name: pozos-initialization 
+        image: curlimages/curl 
+        env:
+        - name: LIST_URL
+          value: "https://raw.githubusercontent.com/diranetafen/student-list/master/simple_api/student_age.json"
+        command: ['sh', '-c', "curl $LIST_URL -o /data/student_age.json"]
+        volumeMounts:
+        - name: student-list
+          mountPath: /data
+      containers:
+      - image: php:apache
+        name: php
+        ports:
+        - containerPort: 80
+        env:
+        - name: USERNAME
+          valueFrom:
+            secretKeyRef:
+              name: student-list-secret
+              key: username
+        - name: PASSWORD
+          valueFrom:
+            secretKeyRef:
+              name: student-list-secret
+              key: password
+        volumeMounts:
+        - name: config-volume
+          mountPath: /var/www/html 
+      - image: eazytrainingfr/pozos-api:0.1
+        name: pozos-api
+        ports:
+        - containerPort: 5000
+        volumeMounts:
+        - name: student-list
+          mountPath: /data
+
+      volumes:
+      - name: config-volume
+        configMap:
+          name: pozos-website-config
+      - name: student-list
+        emptyDir: {}

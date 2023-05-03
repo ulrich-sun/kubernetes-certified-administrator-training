@@ -2,6 +2,7 @@
 kubernetes_apiserver_advertise_address: "{{ ansible_host }}"
 kubernetes_version_rhel_package: '1.26.1'
 token: "783bde.3f89s0fje9f38fhf"
+kubernetes_kubelet_extra_args: "--node-ip={{ ansible_enp0s8.ipv4.address }}"
 # The follow two parameter was explained here https://github.com/geerlingguy/ansible-role-kubernetes#variables-to-configure-kubeadm-and-kubelet-through-command-line-options
 kubernetes_pod_network:
   cni: 'flannel'
