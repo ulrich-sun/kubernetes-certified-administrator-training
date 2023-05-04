@@ -1,0 +1,5 @@
+kubectl label nodes worker1 role=worker
+kubectl get nodes --show-labels
+kubectl apply -f .
+kubectl get po -o wide
+kubectl delete -f .
