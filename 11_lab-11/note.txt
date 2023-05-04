@@ -1,0 +1,11 @@
+nfs_base_url=https://raw.githubusercontent.com/kubernetes-sigs/nfs-ganesha-server-and-external-provisioner/nfs-server-provisioner-1.8.0/deploy/kubernetes
+
+kubectl create -f ${nfs_base_url}/deployment.yaml
+kubectl create -f ${nfs_base_url}/rbac.yaml
+kubectl create -f ${nfs_base_url}/class.yaml
+
+kubectl apply -f pvc-mysql.yml
+
+kubectl apply -f pvc-wordpress.yml
+
+kubectl get pvc
