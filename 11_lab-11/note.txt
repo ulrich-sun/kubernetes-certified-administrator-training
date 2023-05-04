@@ -9,3 +9,5 @@ kubectl apply -f pvc-mysql.yml
 kubectl apply -f pvc-wordpress.yml
 
 kubectl get pvc
+
+kubectl apply -f .
