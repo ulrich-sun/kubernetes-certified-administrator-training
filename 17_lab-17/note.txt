@@ -1,92 +1,36 @@
-##################### upgrade from 1.26.1 to 1.26.4 ############################
-# procedure reference https://v1-26.docs.kubernetes.io/docs/tasks/administer-cluster/kubeadm/kubeadm-upgrade/
-# https://kubernetes.io/docs/reference/using-api/deprecation-policy/
-# https://github.com/kubernetes/kubernetes/tree/master/CHANGELOG
-### IMPORTANT : Snaphost VMs before start
+# on worker1
 
-kubeadm version
-kubeadm upgrade plan
-yum install -y kubeadm-1.26.4-0 --disableexcludes=kubernetes
-kubeadm upgrade apply v1.26.4
+systemctl status kubelet
+cat /usr/lib/systemd/system/kubelet.service.d/10-kubeadm.conf
+cat /var/lib/kubelet/config.yaml
+cat /var/lib/kubelet/config.yaml | grep staticPodPath
 
-kubectl get nodes
+mkdir -p /etc/kubernetes/manifests/
+cat <<EOF >/etc/kubernetes/manifests/static-web.yaml
+apiVersion: v1
+kind: Pod
+metadata:
+  name: static-web
+  labels:
+    role: myrole
+spec:
+  containers:
+    - name: web
+      image: nginx
+      ports:
+        - name: web
+          containerPort: 80
+          protocol: TCP
+EOF
 
-kubectl drain master --ignore-daemonsets
-yum install -y kubelet-1.26.4-0 kubectl-1.26.4-0 --disableexcludes=kubernetes
+# on master
+kubectl get pods
+kubectl delete po static-web-worker1
 
-sudo systemctl daemon-reload
-sudo systemctl restart kubelet
+kubectl get pods
 
-kubectl uncordon master
+# on worker1
+rm -f /etc/kubernetes/manifests/static-web.yaml
 
-kubectl get nodes
-
-# on worker nodes
-yum install -y kubeadm-1.26.4-0 --disableexcludes=kubernetes
-kubeadm upgrade node
-
-# on master node
-kubectl drain worker1 --ignore-daemonsets
-
-# on worker nodes
-yum install -y kubelet-1.26.4-0 kubectl-1.26.4-0 --disableexcludes=kubernetes
-
-sudo systemctl daemon-reload
-sudo systemctl restart kubelet
-
-# on master node
-kubectl uncordon worker1
-
-kubectl get nodes
-
-##################### upgrade from 1.26.4 to 1.27.1 ############################
-# procedure reference https://v1-26.docs.kubernetes.io/docs/tasks/administer-cluster/kubeadm/kubeadm-upgrade/
-# https://kubernetes.io/docs/reference/using-api/deprecation-policy/
-# https://github.com/kubernetes/kubernetes/tree/master/CHANGELOG
-### IMPORTANT : Snaphost VMs before start
-
-##  upgrade from 1.26.4 to 1.27.1
-
-# on master node
-yum list --showduplicates kubeadm --disableexcludes=kubernetes
-yum list --showduplicates kubeadm --disableexcludes=kubernetes | grep 1.27
-kubeadm version
-kubeadm upgrade plan
-yum install -y kubeadm-1.27.1-0 --disableexcludes=kubernetes
-kubeadm version
-kubeadm upgrade plan
-
-kubeadm upgrade apply v1.27.1
-
-kubectl drain master --ignore-daemonsets
-yum install -y kubelet-1.27.1-0 kubectl-1.27.1-0 --disableexcludes=kubernetes
-
-sudo systemctl daemon-reload
-sudo systemctl restart kubelet
-
-kubectl uncordon master
-
-kubectl get nodes
-
-# on worker nodes
-yum install -y kubeadm-1.27.1-0 --disableexcludes=kubernetes
-kubeadm upgrade node
-
-# on master node
-kubectl drain worker1 --ignore-daemonsets
-
-# on worker nodes
-yum install -y kubelet-1.27.1-0 kubectl-1.27.1-0 --disableexcludes=kubernetes
-
-sudo systemctl daemon-reload
-sudo systemctl restart kubelet
-
-# on master node
-kubectl uncordon worker1
-kubectl get nodes
-
-# clean roll backup cluster
-ansible-playbook -i hosts.yml -e "kubernetes_version_rhel_package='1.27.1'" cluster_setup/clean_kubernetes.yml
-ansible-playbook -i hosts.yml cluster_setup/install_kubernetes.yml
-
-kubectl get nodes
+# on master 
+kubectl get pods
