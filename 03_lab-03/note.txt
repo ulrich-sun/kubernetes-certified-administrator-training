@@ -1,12 +1,6 @@
-on master:
----------
-1- check node status : kubectl get nodes
-2- API status : curl -k https://localhost:6443/livez?verbose
-3- pod status : kubectl get pod -n kube-system
-4- container status : ctr -n k8s.io containers list
-5- kubectl status : systemctl status kubelet
-
-on worker:
-----------
-1- container status : ctr -n k8s.io containers list
-2- kubectl status : systemctl status kubelet
+kubernetes official documentation : https://kubernetes.io/docs/home/
+deprecated api component : https://kubernetes.io/docs/reference/using-api/deprecation-guide/
+kubernetes api group : https://kubernetes.io/docs/reference/generated/kubernetes-api/v1.26/
+kubernetes example code : https://github.com/kubernetes/examples
+kubernetes api list : kubectl api-resources
+kubectl cli : https://kubernetes.io/docs/reference/generated/kubectl/kubectl-commands
