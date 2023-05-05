@@ -1,0 +1,37 @@
+# On master, use vagrant user
+kubectl get po
+
+1- Creating Kubernetes User
+
+mkdir -p  ~/.kube/users
+cd ~/.kube/users
+
+openssl genrsa -out kim.key 2048
+
+openssl req -new -key kim.key -out kim.csr -subj "/CN=kim/O=dev/O=example.org"
+sudo openssl x509 -req -CA /etc/kubernetes/pki/ca.crt -CAkey /etc/kubernetes/pki/ca.key -CAcreateserial -days 730 -in kim.csr -out kim.crt
+
+2- Setting up User configs with kubectl
+
+kubectl config set-credentials kim --client-certificate=/home/vagrant/.kube/users/kim.crt --client-key=/home/vagrant/.kube/users/kim.key
+
+cat ~/.kube/config
+
+kubectl config get-contexts
+
+kubectl config set-context kim-kubernetes --cluster=kubernetes  --user=kim --namespace=default
+cat ../config
+ 
+kubectl config view
+kubectl config use-context  kim-kubernetes
+kubectl get po
+kubectl config set-cluster kubernetes --server=https://192.168.99.10:6443 --certificate-authority=/etc/kubernetes/pki/ca.crt
+kubectl get po
+
+# On master, use root account
+
+kubectl apply -f readonly-role.yaml
+kubectl apply -f readonly-rolebinding.yml
+
+# On master, use vagrant user
+kubectl get po
