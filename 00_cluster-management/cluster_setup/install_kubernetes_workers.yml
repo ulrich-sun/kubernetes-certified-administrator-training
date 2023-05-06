@@ -27,6 +27,11 @@
       sysctl_set: true
       state: present
       reload: true 
+  - name: disable swap
+    shell: |
+      swapon -a
+    when: swap_disabled == true
+
   roles:
     - role: geerlingguy.pip
     - role: geerlingguy.containerd
