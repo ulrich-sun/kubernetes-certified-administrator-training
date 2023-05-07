@@ -14,6 +14,8 @@ https://docs.linuxfoundation.org/tc-docs/certification/tips-cka-and-ckad
 
 https://github.com/eazytraining/kubernetes-certification-stack
 
+https://www.youtube.com/watch?v=Z-Q62_OUqT4
+
 
 ## Kubernetes Architecture
 https://landscape.cncf.io/
