@@ -5,7 +5,7 @@ kubectl apply -f https://raw.githubusercontent.com/appscode/third-party-tools/ma
 kubectl apply -f https://raw.githubusercontent.com/appscode/third-party-tools/master/storage/nfs/artifacts/nfs-service.yaml
 kubectl -n storage exec -t -i $(kubectl -n storage get pod -l app=nfs-server -o jsonpath="{.items[0].metadata.name}") -- mkdir /exports/{mysql,wordpress}
 kubectl -n storage get service/nfs-service -o jsonpath="{.spec.clusterIP}"
-# update service-wordpress.yml and service-mysql.yml with the IP get above
+# update deployment-wordpress.yml and deployment-mysql.yml with the IP get above
 kubectl apply -f .
 kubectl -n storage exec -t -i $(kubectl -n storage get pod -l app=nfs-server -o jsonpath="{.items[0].metadata.name}") -- ls /exports/mysql
 kubectl -n storage exec -t -i $(kubectl -n storage get pod -l app=nfs-server -o jsonpath="{.items[0].metadata.name}") -- ls /exports/wordpress
