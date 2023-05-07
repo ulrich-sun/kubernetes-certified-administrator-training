@@ -16,6 +16,8 @@ https://github.com/eazytraining/kubernetes-certification-stack
 
 https://www.youtube.com/watch?v=Z-Q62_OUqT4
 
+vagrant common issues : https://drive.google.com/drive/folders/1J9uNNA-i4JWhZsWOX6DrXXRBM-GmrWma?usp=share_link
+
 
 ## Kubernetes Architecture
 https://landscape.cncf.io/
