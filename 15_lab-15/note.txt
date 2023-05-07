@@ -1,4 +1,6 @@
 kubectl taint node worker1 tier=backend:NoSchedule-
+ansible-playbook -i hosts.yml cluster_setup/clean_kubernetes.yml
+ansible-playbook -i hosts.yml cluster_setup/install_kubernetes.yml
 
 kubectl apply -f .
 # install etcdctl https://github.com/etcd-io/etcd/releases
