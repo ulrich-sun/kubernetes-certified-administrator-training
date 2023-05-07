@@ -12,7 +12,9 @@ kubectl set image deployment/pozos-website php=php:apache-bullseye
 kubectl get rs
 kubectl get deploy
 kubectl rollout history deployment/pozos-website
-kubectl rollout history deployment/pozos-website --to-revision=1 
+kubectl rollout history deployment/pozos-website --revision=1
+kubectl rollout history deployment/pozos-website --revision=2
+kubectl rollout undo deployment pozos-website
 kubectl rollout status -w deployment/pozos-website
 kubectl get rs
 kubectl get deploy
