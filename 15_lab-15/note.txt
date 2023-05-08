@@ -34,26 +34,23 @@ ETCDCTL_API=3 etcdctl --endpoints=https://127.0.0.1:2379 \
 --key=/etc/kubernetes/pki/etcd/server.key \
 snapshot save /tmp/backup.db
 
+ETCDCTL_API=3 etcdctl --write-out=table snapshot status /tmp/backup.db
+
 kubectl delete -f .
 
-ETCDCTL_API=3 etcdctl --data-dir="/var/lib/etcd-backup" \
---endpoints=https://127.0.0.1:2379 \
---cacert=/etc/kubernetes/pki/etcd/ca.crt \
---cert=/etc/kubernetes/pki/etcd/server.crt \
---key=/etc/kubernetes/pki/etcd/server.key \
-snapshot restore /tmp/backup.db
+mv /etc/kubernetes/manifests/kube-apiserver.yaml ./
+mv /etc/kubernetes/manifests/etcd.yaml ./
+rm -rf /var/lib/etcd
+
+ETCDCTL_API=3 etcdctl --data-dir="/var/lib/etcd" snapshot restore /tmp/backup.db
+
+mv kube-apiserver.yaml /etc/kubernetes/manifests/
+mv etcd.yaml /etc/kubernetes/manifests/
 
 kubectl get po
-
-# in /etc/kubernetes/manifests/etcd.yaml replace /var/lib/etcd with /var/lib/etcd-backup
 
 ctr -n k8s.io containers list
 
 journalctl -u kubelet
 
-ctr -n k8s.io containers list | grep etcd
-
-kubectl -n kube-system describe po etcd-master
-
-kubectl get po
 kubectl delete -f .
