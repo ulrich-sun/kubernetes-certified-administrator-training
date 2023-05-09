@@ -12,3 +12,5 @@ kubectl get po -o=jsonpath="{range .items[*]}{.metadata.name}{'\t'}{.spec.contai
 
 
 kubectl exec -it $(kubectl get po -l app=pozos-api  -o=jsonpath="{.items[*].metadata.name}") -- cat  /data/student_age.json
+
+kubectl delete -f .
