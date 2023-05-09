@@ -1,0 +1,14 @@
+kubectl apply -f .
+
+kubectl get svc -o=jsonpath='{.items[2].spec.ports[0].nodePort}'
+kubectl get svc -o=jsonpath='{.items[?(@.metadata.name=="pozos-website-service")].spec.ports[0].nodePort}
+
+kubectl get po -o=jsonpath="{.items[*]['metadata.name', 'status.startTime']}"
+kubectl get po -o=jsonpath="{range .items[*]}[{.metadata.name}, {.status.startTime}] {end}"
+kubectl get po -o=jsonpath="{range .items[*]}{.metadata.name}{'\t'}{.status.startTime} {end}"
+kubectl get po -o=jsonpath="{range .items[*]}{.metadata.name}{'\t'}{.status.startTime}{'\n'}{end}"
+
+kubectl get po -o=jsonpath="{range .items[*]}{.metadata.name}{'\t'}{.spec.containers[*].image}{'\n'}{end}"
+
+
+kubectl exec -it $(kubectl get po -l app=pozos-api  -o=jsonpath="{.items[*].metadata.name}") -- cat  /data/student_age.json
