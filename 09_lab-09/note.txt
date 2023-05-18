@@ -1,3 +1,4 @@
+################### Vagrant ###################################################
 kubectl apply -f https://raw.githubusercontent.com/metallb/metallb/v0.13.9/config/manifests/metallb-native.yaml
 kubectl get all -n metallb-system
 kubectl apply -f ipaddresspool.yml
@@ -8,5 +9,22 @@ kubectl apply -f .
 kubectl get svc -n ingress-nginx -o wide
 # get external IP of ingress-nginx-controller service loadbalancer 
 # update hosts file with : 192.168.99.150 pozos.eazytraining.fr
+
+kubectl delete -f .
+
+
+#################### AWS #####################################################
+curl --silent https://raw.githubusercontent.com/kubernetes/ingress-nginx/controller-v1.7.0/deploy/static/provider/baremetal/deploy.yaml | sed 's/LoadBalancer/NodePort/g' | sed '/targetPort\: http$/a\    nodePort\: 30080' | sed '/targetPort\: https$/a\    nodePort\: 30443' | kubectl apply -f -
+
+kubectl apply -f student-list-secret.yml
+kubectl apply -f pozos-website-config.yml
+kubectl apply -f frontend.yml
+kubectl apply -f backend.yml 
+kubectl apply -f pozos-website-service.yml 
+kubectl apply -f pozos-api-service.yml
+kubectl apply -f pozos-website-ingress.yml
+
+# update hosts file with : <master node public ip> pozos.eazytraining.fr
+# open your browser : http://pozos.eazytraining.fr:30080
 
 kubectl delete -f .
