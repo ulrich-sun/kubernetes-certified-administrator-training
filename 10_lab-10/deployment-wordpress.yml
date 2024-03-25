@@ -31,5 +31,5 @@ spec:
         volumes:
           - name: data-wordpress-volume
             nfs:
-              server: "10.106.17.134" 
+              server: "10.101.153.25" 
               path: /wordpress/
