@@ -13,7 +13,7 @@ sudo openssl x509 -req -CA /etc/kubernetes/pki/ca.crt -CAkey /etc/kubernetes/pki
 
 2- Setting up User configs with kubectl
 
-kubectl config set-credentials kim --client-certificate=/home/vagrant/.kube/users/kim.crt --client-key=/home/vagrant/.kube/users/kim.key
+kubectl config set-credentials kim --client-certificate=/root/.kube/users/kim.crt --client-key=/root/.kube/users/kim.key
 
 cat ~/.kube/config
 
