@@ -25,7 +25,7 @@ yum clean all
 
 yum update
 yum list --showduplicates kubeadm --disableexcludes=kubernetes
-sudo yum install -y  kubeadm-1.30.4 --disableexcludes=kubernetes
+sudo yum install -y  kubeadm-1.30.1 --disableexcludes=kubernetes
 kubeadm version
 kubeadm upgrade plan
 
@@ -51,10 +51,10 @@ yum list --showduplicates kubeadm --disableexcludes=kubernetes
 cat <<EOF | sudo tee /etc/yum.repos.d/kubernetes.repo
 [kubernetes]
 name=Kubernetes
-baseurl=https://pkgs.k8s.io/core:/stable:/v1.29/rpm/
+baseurl=https://pkgs.k8s.io/core:/stable:/v1.30/rpm/
 enabled=1
 gpgcheck=1
-gpgkey=https://pkgs.k8s.io/core:/stable:/v1.29/rpm/repodata/repomd.xml.key
+gpgkey=https://pkgs.k8s.io/core:/stable:/v1.30/rpm/repodata/repomd.xml.key
 exclude=kubelet kubeadm kubectl cri-tools kubernetes-cni
 EOF
 
