@@ -1,4 +1,4 @@
-# cka (Certified Kubernetes Administrator) training in French by [EAZYTraining](https://eazytraining.fr/)
+# CKA (Certified Kubernetes Administrator) training in French by [EAZYTraining](https://eazytraining.fr/)
 
 :warning: **Ce cours est activement maintenu et mis à jour** : Nous acceptons les [Pull Request](https://github.com/eazytraining/kubernetes-certified-administrator-training/pulls) pour toute amélioration/suggestion. Vous pouvez ouvrir une [issue](https://github.com/eazytraining/kubernetes-certified-administrator-training/issues) si vous rencontrez le moindre souci, Nous sommes là pour vous !
 
