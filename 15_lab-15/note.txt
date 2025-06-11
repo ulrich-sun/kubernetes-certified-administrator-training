@@ -26,8 +26,10 @@ rm -f /tmp/etcd-${ETCD_VER}-linux-amd64.tar.gz
 /tmp/etcd-download-test/etcdctl version
 /tmp/etcd-download-test/etcdutl version
 
-ln -s /tmp/etcd-download-test/etcdctl /usr/bin/etcdctl
+sudo ln -s /tmp/etcd-download-test/etcdctl /usr/bin/etcdctl
+sudo ln -s /tmp/etcd-download-test/etcdutl /usr/bin/etcdutl
 etcdctl version
+etcdutl version
 
 cat /etc/kubernetes/manifests/kube-apiserver.yaml | grep etcd
 
@@ -37,7 +39,7 @@ ETCDCTL_API=3 etcdctl --endpoints=https://127.0.0.1:2379 \
 --key=/etc/kubernetes/pki/etcd/server.key \
 snapshot save /tmp/backup.db
 
-/tmp/etcd-download-test/etcdutl snapshot status /tmp/backup.db --write-out=table
+etcdutl snapshot status /tmp/backup.db --write-out=table
 
 kubectl delete -f .
 
