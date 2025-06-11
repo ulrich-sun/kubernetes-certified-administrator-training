@@ -48,7 +48,7 @@ mv /etc/kubernetes/manifests/etcd.yaml ./
 rm -rf /var/lib/etcd
 
 
-/tmp/etcd-download-test/etcdutl snapshot restore /tmp/backup.db --data-dir="/var/lib/etcd"
+etcdutl snapshot restore /tmp/backup.db --data-dir="/var/lib/etcd"
 
 mv kube-apiserver.yaml /etc/kubernetes/manifests/
 mv etcd.yaml /etc/kubernetes/manifests/
