@@ -33,7 +33,7 @@ if [ ! -f /etc/apt/keyrings/kubernetes-apt-keyring.gpg ]; then
   sudo mkdir -p /etc/apt/keyrings
   curl -fsSL https://pkgs.k8s.io/core:/stable:/v1.32/deb/Release.key | sudo gpg --dearmor -o /etc/apt/keyrings/kubernetes-apt-keyring.gpg
 fi
-# clean apt cache
+# clean apt cache & update
 sudo apt clean
 sudo apt update
 
@@ -78,12 +78,12 @@ cat <<EOF | sudo tee /etc/apt/sources.list.d/pkgs_k8s_io.list
 deb [signed-by=/etc/apt/keyrings/kubernetes-apt-keyring.gpg] https://pkgs.k8s.io/core:/stable:/v1.32/deb/ /
 EOF
 
-# clean apt cache
-sudo apt clean
-sudo apt update
-
-# If the keyring doesn't exists
-curl -fsSL https://pkgs.k8s.io/core:/stable:/v1.32/deb/Release.key | sudo gpg --dearmor -o /etc/apt/keyrings/kubernetes-apt-keyring.gpg
+# Import the keyring if it doesn't exist
+if [ ! -f /etc/apt/keyrings/kubernetes-apt-keyring.gpg ]; then
+  sudo mkdir -p /etc/apt/keyrings
+  curl -fsSL https://pkgs.k8s.io/core:/stable:/v1.32/deb/Release.key | sudo gpg --dearmor -o /etc/apt/keyrings/kubernetes-apt-keyring.gpg
+fi
+# clean apt cache & update
 sudo apt clean
 sudo apt update
 
