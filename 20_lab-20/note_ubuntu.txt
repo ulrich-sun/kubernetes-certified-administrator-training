@@ -29,10 +29,11 @@ sysctl --system
 apt-get update
 apt-get install -y apt-transport-https ca-certificates curl gpg
 
-# Ajout de la clé GPG du dépôt Kubernetes (Ajouté par ChatGPT)
+# Ajout de la clé GPG du dépôt Kubernetes 
+mkdir -p /etc/apt/keyrings
 curl -fsSL https://pkgs.k8s.io/core:/stable:/v1.32/deb/Release.key | gpg --dearmor -o /etc/apt/keyrings/kubernetes-apt-keyring.gpg
 
-# Ajout du dépôt Kubernetes v1.32 (Ajouté par ChatGPT)
+# Ajout du dépôt Kubernetes v1.32
 echo "deb [signed-by=/etc/apt/keyrings/kubernetes-apt-keyring.gpg] https://pkgs.k8s.io/core:/stable:/v1.32/deb/ /" > /etc/apt/sources.list.d/kubernetes.list
 
 # Mise à jour des paquets
@@ -44,6 +45,9 @@ apt-get install -y kubelet=${VERSION} kubeadm=${VERSION} kubectl=${VERSION}
 
 # Empêcher leur mise à jour automatique
 apt-mark hold kubelet kubeadm kubectl
+
+# Installation de containerd
+apt-get install -y containerd
 
 # 🔧 Vérification et configuration de containerd pour utiliser SystemdCgroup
 mkdir -p /etc/containerd
