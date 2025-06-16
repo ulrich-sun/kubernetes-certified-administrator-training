@@ -1,33 +1,9 @@
-################ Installation de Kubeadm ###################
-
-### On master - https://v1-30.docs.kubernetes.io/docs/setup/production-environment/tools/kubeadm/install-kubeadm/
-
-
-### On worker
-
-
-################ Création du cluster ###################
-
-
-# On master
-
-
-# On worker
-
-
-# On master
-
-
-# kubectl apply -f ${flannel_manifest}
-
-
-
 # install_kubernetes_v1.32.sh
 #!/bin/bash
 
 ################ Installation de Kubeadm ###################
 
-### On master - https://kubernetes.io/docs/setup/production-environment/tools/kubeadm/install-kubeadm/
+### On master - https://v1-32.docs.kubernetes.io/docs/setup/production-environment/tools/kubeadm/install-kubeadm/
 
 # Désactivation du swap
 swapoff -a
@@ -69,8 +45,24 @@ apt-get install -y kubelet=${VERSION} kubeadm=${VERSION} kubectl=${VERSION}
 # Empêcher leur mise à jour automatique
 apt-mark hold kubelet kubeadm kubectl
 
+# 🔧 Vérification et configuration de containerd pour utiliser SystemdCgroup
+mkdir -p /etc/containerd
+containerd config default | tee /etc/containerd/config.toml > /dev/null
+
+sed -i 's/SystemdCgroup = false/SystemdCgroup = true/' /etc/containerd/config.toml
+
+# Redémarrage de containerd pour appliquer la config
+systemctl restart containerd
+
 # Activer et démarrer kubelet
 systemctl enable --now kubelet
+
+# 🔥 Désactivation du firewall UFW (à désactiver temporairement si activé)
+if systemctl is-active --quiet ufw; then
+    systemctl stop ufw
+    systemctl disable ufw
+    echo "🔥 Firewall UFW désactivé pour éviter les blocages de réseau Kubernetes."
+fi
 
 # Charger les règles réseau nécessaires
 echo 1 > /proc/sys/net/ipv4/ip_forward
@@ -83,8 +75,6 @@ echo 1 > /proc/sys/net/bridge/bridge-nf-call-ip6tables
 # Répétez l'exécution complète de ce script sur chaque worker pour assurer une configuration cohérente.
 
 # Fin de l'installation kubeadm/kubelet/kubectl pour master et worker sous Ubuntu
-
-
 
 
 # kubeadm init sur le master
@@ -111,13 +101,17 @@ kubectl get nodes
 kubectl get pods -n kube-system
 
 # Installation de Flannel avec interface réseau personnalisée (Ajouté par ChatGPT)
-flannel_manifest=https://raw.githubusercontent.com/flannel-io/flannel/master/Documentation/kube-flannel.yml
+flannel_manifest=https://raw.githubusercontent.com/flannel-io/flannel/v0.24.2/Documentation/kube-flannel.yml
 curl ${flannel_manifest} | sed '/kube-subnet-mgr.*/a\\        - --iface=enp0s8' | kubectl apply -f -
 
 # Vérification de Flannel
 kubectl get pods -n kube-flannel
 kubectl get nodes
 kubectl get pods -n kube-system
+
+# 💡 Affichage de la commande kubeadm join (à copier sur les workers)
+echo "Command to join worker nodes:"
+kubeadm token create --print-join-command
 
 ### À exécuter sur chaque worker node une fois kubeadm init terminé et les tokens connus
 
